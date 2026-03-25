@@ -17,5 +17,6 @@ def run(task: str) -> str:
 
 if __name__ == "__main__":
     import sys
+
     task = " ".join(sys.argv[1:]) or "Hello, world!"
     print(run(task))

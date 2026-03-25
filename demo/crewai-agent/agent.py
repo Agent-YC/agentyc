@@ -32,10 +32,7 @@ def build_crew(task_description: str):
     run_crewai_agent() from core.runner.
     """
     if not HAS_CREWAI:
-        raise ImportError(
-            "CrewAI is required. Install with:\n"
-            "  pip install crewai"
-        )
+        raise ImportError("CrewAI is required. Install with:\n  pip install crewai")
 
     researcher = Agent(
         role="Senior Research Analyst",

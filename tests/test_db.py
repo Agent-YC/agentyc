@@ -1,8 +1,6 @@
 """Tests for core.db — SQLite local storage."""
 
-import json
 import pytest
-from pathlib import Path
 
 from core.db import LocalDB, get_db
 
@@ -52,7 +50,7 @@ class TestLocalDB:
 
     def test_save_and_get_eval(self, db):
         db.save_agent("test-v1", "TestBot", "spec")
-        eid = db.save_eval(
+        db.save_eval(
             "test-v1",
             {"reliability": 80, "cost": 70, "safety": 90, "speed": 60, "overall": 76},
             challenges=[{"id": "test/challenge", "passed": True}],
@@ -65,8 +63,16 @@ class TestLocalDB:
 
     def test_get_latest_eval(self, db):
         db.save_agent("test-v1", "TestBot", "spec")
-        eid1 = db.save_eval("test-v1", {"reliability": 50, "cost": 50, "safety": 50, "speed": 50, "overall": 50}, eval_id="eval-001")
-        eid2 = db.save_eval("test-v1", {"reliability": 90, "cost": 90, "safety": 90, "speed": 90, "overall": 90}, eval_id="eval-002")
+        db.save_eval(
+            "test-v1",
+            {"reliability": 50, "cost": 50, "safety": 50, "speed": 50, "overall": 50},
+            eval_id="eval-001",
+        )
+        db.save_eval(
+            "test-v1",
+            {"reliability": 90, "cost": 90, "safety": 90, "speed": 90, "overall": 90},
+            eval_id="eval-002",
+        )
         evals = db.get_evals("test-v1")
         # At minimum both evals exist
         assert len(evals) == 2
@@ -82,7 +88,7 @@ class TestLocalDB:
             {"role": "user", "content": "How to improve?"},
             {"role": "assistant", "content": "Fix your reliability."},
         ]
-        sid = db.save_coach_session("test-v1", messages)
+        db.save_coach_session("test-v1", messages)
         sessions = db.get_coach_sessions("test-v1")
         assert len(sessions) == 1
         assert len(sessions[0]["messages"]) == 2

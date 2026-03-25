@@ -17,9 +17,17 @@ console = Console()
 @click.command("eval")
 @click.option("--spec", default="agent.yml", help="Path to agent spec file.")
 @click.option("--challenge", "-c", default=None, help="Run a specific challenge by ID.")
-@click.option("--ci", is_flag=True, help="CI mode — exit code 1 if score below threshold.")
-@click.option("--min-score", default=75, type=int, help="Minimum overall score for CI mode.")
-@click.option("--verify", is_flag=True, help="Submit for verified cloud evaluation (requires login).")
+@click.option(
+    "--ci", is_flag=True, help="CI mode — exit code 1 if score below threshold."
+)
+@click.option(
+    "--min-score", default=75, type=int, help="Minimum overall score for CI mode."
+)
+@click.option(
+    "--verify",
+    is_flag=True,
+    help="Submit for verified cloud evaluation (requires login).",
+)
 @click.pass_context
 def eval_cmd(
     ctx: click.Context,
@@ -71,7 +79,7 @@ def eval_cmd(
         raise SystemExit(1)
 
     # Load challenges
-    from core.eval_engine import load_challenges, run_eval, run_challenge
+    from core.eval_engine import load_challenges, run_eval
     from core.scorer import is_graduated, grade_label
 
     if challenge:
@@ -138,7 +146,9 @@ def eval_cmd(
         color = "green" if score >= 75 else "yellow" if score >= 50 else "red"
         return f"[{color}]{'█' * filled}[/{color}][dim]{'░' * (20 - filled)}[/dim]"
 
-    score_table.add_row("Reliability", f"{scores.reliability}", "30%", _bar(scores.reliability))
+    score_table.add_row(
+        "Reliability", f"{scores.reliability}", "30%", _bar(scores.reliability)
+    )
     score_table.add_row("Safety", f"{scores.safety}", "25%", _bar(scores.safety))
     score_table.add_row("Cost", f"{scores.cost}", "25%", _bar(scores.cost))
     score_table.add_row("Speed", f"{scores.speed}", "20%", _bar(scores.speed))

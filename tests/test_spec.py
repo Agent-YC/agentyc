@@ -2,7 +2,6 @@
 
 import pytest
 import yaml
-from pathlib import Path
 
 from core.spec import (
     AgentSpec,
@@ -83,12 +82,14 @@ class TestParseSpec:
         (tmp_dir / "agent.py").write_text("# agent", encoding="utf-8")
         spec_file = tmp_dir / "agent.yml"
         spec_file.write_text(
-            yaml.dump({
-                "name": "MinimalBot",
-                "version": "0.1",
-                "description": "A minimal agent.",
-                "entrypoint": "./agent.py",
-            }),
+            yaml.dump(
+                {
+                    "name": "MinimalBot",
+                    "version": "0.1",
+                    "description": "A minimal agent.",
+                    "entrypoint": "./agent.py",
+                }
+            ),
             encoding="utf-8",
         )
         spec = parse_spec(spec_file)

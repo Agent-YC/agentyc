@@ -5,7 +5,6 @@ Parses and validates agent.yml files into structured AgentSpec objects.
 
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -166,7 +165,9 @@ def validate_spec_data(
     if entrypoint and spec_dir is not None:
         ep_path = spec_dir / entrypoint
         if not ep_path.exists() and not entrypoint.startswith("docker://"):
-            errors.append(f"Entrypoint not found: '{entrypoint}' (looked in {spec_dir})")
+            errors.append(
+                f"Entrypoint not found: '{entrypoint}' (looked in {spec_dir})"
+            )
 
     return errors
 

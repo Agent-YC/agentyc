@@ -6,7 +6,6 @@ A batch is a time-boxed cohort of agents evaluated together.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, TYPE_CHECKING
 

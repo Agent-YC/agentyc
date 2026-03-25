@@ -1,14 +1,11 @@
 """Tests for core.scorer — scoring logic."""
 
-import pytest
-
 from core.scorer import (
     Scorecard,
     compute_overall,
     is_graduated,
     grade_label,
     WEIGHTS,
-    DEFAULT_GRADUATION_THRESHOLD,
 )
 
 

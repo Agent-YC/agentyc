@@ -6,7 +6,6 @@ feedback: sharp, specific, and prioritized.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -15,7 +14,9 @@ if TYPE_CHECKING:
     from core.eval_engine import EvalResult
     from core.spec import AgentSpec
 
-COACH_PROMPT_FILE = Path(__file__).resolve().parent.parent / "prompts" / "coach_local.txt"
+COACH_PROMPT_FILE = (
+    Path(__file__).resolve().parent.parent / "prompts" / "coach_local.txt"
+)
 
 
 _DEFAULT_COACH_PROMPT = """\
@@ -60,7 +61,6 @@ def get_coaching(
     Returns:
         The coach's response text.
     """
-    from core.spec import spec_to_yaml
 
     system = _load_coach_prompt()
     context = _build_context(spec, eval_result)
@@ -100,7 +100,10 @@ def get_coaching_chat(
     # Prepend context as the first user message if not already present
     enriched_messages = [
         {"role": "user", "content": f"Here is my agent's context:\n\n{context}"},
-        {"role": "assistant", "content": "Got it. I've reviewed your agent's spec and eval results. What would you like to work on?"},
+        {
+            "role": "assistant",
+            "content": "Got it. I've reviewed your agent's spec and eval results. What would you like to work on?",
+        },
         *messages,
     ]
 

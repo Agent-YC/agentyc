@@ -9,7 +9,6 @@ import json
 import re
 import subprocess
 import time
-import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -21,12 +20,14 @@ if TYPE_CHECKING:
     from cli.ollama import OllamaClient
     from core.spec import AgentSpec
 
-from core.scorer import Scorecard, compute_overall
+from core.scorer import Scorecard
 
 
 CHALLENGES_DIR = Path(__file__).resolve().parent.parent / "challenges"
 
-EVAL_JUDGE_PROMPT_FILE = Path(__file__).resolve().parent.parent / "prompts" / "eval_judge.txt"
+EVAL_JUDGE_PROMPT_FILE = (
+    Path(__file__).resolve().parent.parent / "prompts" / "eval_judge.txt"
+)
 
 
 @dataclass
@@ -173,9 +174,7 @@ def run_challenge(
     ]
 
     if eval_type == "llm_judge":
-        score, passed, details = _eval_llm_judge(
-            agent_output, challenge, ollama
-        )
+        score, passed, details = _eval_llm_judge(agent_output, challenge, ollama)
     elif eval_type == "exact_match":
         score, passed, details = _eval_exact_match(agent_output, challenge)
     elif eval_type == "regex":
@@ -220,6 +219,7 @@ def run_eval(
         challenges = load_challenges()
     if ollama is None:
         from cli.ollama import OllamaClient as _OC
+
         ollama = _OC()
 
     results: list[ChallengeResult] = []

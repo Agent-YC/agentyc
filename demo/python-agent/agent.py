@@ -4,7 +4,6 @@ This is the simplest possible agent — just a run() function.
 Agent YC imports this and calls run(task) directly.
 """
 
-import json
 import sys
 
 

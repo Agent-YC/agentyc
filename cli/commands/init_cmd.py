@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 import click
@@ -19,7 +18,9 @@ TEMPLATES_DIR = Path(__file__).resolve().parent.parent.parent / "templates"
 @click.option(
     "--template",
     "-t",
-    type=click.Choice(["basic", "tool-heavy", "multi-step", "langchain", "crewai", "docker"]),
+    type=click.Choice(
+        ["basic", "tool-heavy", "multi-step", "langchain", "crewai", "docker", "api"]
+    ),
     default="basic",
     help="Agent template to use.",
 )
@@ -46,7 +47,9 @@ def init_cmd(name: str, template: str) -> None:
                 content = src.read_text(encoding="utf-8")
                 # Replace template placeholder with project name
                 content = content.replace("{{AGENT_NAME}}", name)
-                content = content.replace("{{agent_name}}", name.lower().replace("-", "_"))
+                content = content.replace(
+                    "{{agent_name}}", name.lower().replace("-", "_")
+                )
                 (target / src.name).write_text(content, encoding="utf-8")
     else:
         # Inline basic template as fallback

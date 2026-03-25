@@ -1,14 +1,9 @@
 """Tests for core.runner — agent runner."""
 
-import json
-import pytest
-from pathlib import Path
-
 from core.runner import (
     RunResult,
     detect_entrypoint_type,
     run_python_agent,
-    run_api_agent,
     run_agent,
     run_callable_agent,
     run_langchain_agent,

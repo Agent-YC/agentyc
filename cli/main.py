@@ -24,6 +24,7 @@ def cli(ctx: click.Context, model: str | None) -> None:
 
 
 # ---- Register subcommands ---------------------------------------------------
+# ruff: noqa: E402
 
 from cli.commands.init_cmd import init_cmd
 from cli.commands.screen import screen

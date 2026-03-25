@@ -191,7 +191,7 @@ result = run_callable_agent(lambda task: my_agent(task), "Task prompt...")
 ## CLI reference
 
 ```bash
-agent-yc init [name]              # Scaffold agent project (--template basic|tool-heavy|multi-step|langchain|crewai|docker)
+agent-yc init [name]              # Scaffold agent project (--template basic|tool-heavy|multi-step|langchain|crewai|docker|api)
 agent-yc screen                   # Screen spec for admission
 agent-yc eval                     # Run full evaluation suite
 agent-yc eval --challenge <id>    # Run specific challenge

@@ -15,7 +15,9 @@ console = Console()
 @click.command()
 @click.argument("question", required=False, default=None)
 @click.option("--spec", default="agent.yml", help="Path to agent spec file.")
-@click.option("--pro", is_flag=True, help="Use Pro Coach (requires cloud subscription).")
+@click.option(
+    "--pro", is_flag=True, help="Use Pro Coach (requires cloud subscription)."
+)
 @click.pass_context
 def coach(ctx: click.Context, question: str | None, spec: str, pro: bool) -> None:
     """Get coaching feedback — like a YC partner in office hours.
@@ -70,13 +72,15 @@ def coach(ctx: click.Context, question: str | None, spec: str, pro: bool) -> Non
 
         eval_result = EvalResult(
             agent_id=agent_spec.id,
-            scorecard=Scorecard.from_dict({
-                "reliability": latest_eval["score_reliability"],
-                "cost": latest_eval["score_cost"],
-                "safety": latest_eval["score_safety"],
-                "speed": latest_eval["score_speed"],
-                "overall": latest_eval["score_overall"],
-            }),
+            scorecard=Scorecard.from_dict(
+                {
+                    "reliability": latest_eval["score_reliability"],
+                    "cost": latest_eval["score_cost"],
+                    "safety": latest_eval["score_safety"],
+                    "speed": latest_eval["score_speed"],
+                    "overall": latest_eval["score_overall"],
+                }
+            ),
             challenges=[
                 ChallengeResult(
                     challenge_id=c.get("id", ""),
@@ -93,9 +97,7 @@ def coach(ctx: click.Context, question: str | None, spec: str, pro: bool) -> Non
 
     if question:
         # Single-shot mode
-        console.print(
-            f"[bold cyan]Coach[/bold cyan] [dim](model: {model})[/dim]\n"
-        )
+        console.print(f"[bold cyan]Coach[/bold cyan] [dim](model: {model})[/dim]\n")
         with console.status("[bold cyan]Thinking...", spinner="dots"):
             response = get_coaching(agent_spec, eval_result, question, ollama)
 
@@ -137,9 +139,7 @@ def coach(ctx: click.Context, question: str | None, spec: str, pro: bool) -> Non
             messages.append({"role": "user", "content": user_input})
 
             with console.status("[bold cyan]Thinking...", spinner="dots"):
-                response = get_coaching_chat(
-                    agent_spec, eval_result, messages, ollama
-                )
+                response = get_coaching_chat(agent_spec, eval_result, messages, ollama)
 
             messages.append({"role": "assistant", "content": response})
 

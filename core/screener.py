@@ -10,14 +10,16 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from cli.ollama import OllamaClient
     from core.spec import AgentSpec
 
 
-SCREENER_PROMPT_FILE = Path(__file__).resolve().parent.parent / "prompts" / "screener.txt"
+SCREENER_PROMPT_FILE = (
+    Path(__file__).resolve().parent.parent / "prompts" / "screener.txt"
+)
 
 
 @dataclass
@@ -143,8 +145,8 @@ def _parse_response(raw: str) -> ScreeningResult:
     )
 
 
-def _safe_int(val: object) -> int:
+def _safe_int(val: Any) -> int:
     try:
-        return max(0, min(100, int(val)))  # type: ignore[arg-type]
+        return max(0, min(100, int(float(val))))
     except (TypeError, ValueError):
         return 0

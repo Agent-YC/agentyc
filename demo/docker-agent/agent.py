@@ -13,20 +13,22 @@ import json
 
 def process(task: str) -> str:
     """Process a task and return structured output."""
-    return json.dumps({
-        "output": (
-            f"## Docker Agent Response\n\n"
-            f"**Task**: {task[:200]}\n\n"
-            f"Processed inside a sandboxed Docker container with:\n"
-            f"- No network access (--network none)\n"
-            f"- 512MB memory limit\n"
-            f"- 1 CPU core\n\n"
-            f"In production, this container would run your full agent stack "
-            f"(LangChain, CrewAI, custom code) in complete isolation."
-        ),
-        "success": True,
-        "metadata": {"runtime": "docker", "sandbox": True},
-    })
+    return json.dumps(
+        {
+            "output": (
+                f"## Docker Agent Response\n\n"
+                f"**Task**: {task[:200]}\n\n"
+                f"Processed inside a sandboxed Docker container with:\n"
+                f"- No network access (--network none)\n"
+                f"- 512MB memory limit\n"
+                f"- 1 CPU core\n\n"
+                f"In production, this container would run your full agent stack "
+                f"(LangChain, CrewAI, custom code) in complete isolation."
+            ),
+            "success": True,
+            "metadata": {"runtime": "docker", "sandbox": True},
+        }
+    )
 
 
 if __name__ == "__main__":

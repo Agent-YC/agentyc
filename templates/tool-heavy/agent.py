@@ -3,9 +3,6 @@
 This agent orchestrates multiple tools to complete complex tasks.
 """
 
-from typing import Any
-
-
 # Define your tools here
 TOOLS = {
     "web_search": lambda query: f"[Search results for: {query}]",
@@ -35,5 +32,6 @@ def run(task: str) -> str:
 
 if __name__ == "__main__":
     import sys
+
     task = " ".join(sys.argv[1:]) or "Hello, world!"
     print(run(task))

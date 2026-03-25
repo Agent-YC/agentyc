@@ -1,7 +1,6 @@
 """Tests for core.screener — screening agent."""
 
 import json
-import pytest
 
 from core.screener import screen_agent, ScreeningResult, _parse_response
 
@@ -19,7 +18,9 @@ class TestScreeningResult:
         assert r.overall == 76
 
     def test_to_dict(self):
-        r = ScreeningResult(verdict="REJECT", clarity=10, feasibility=10, safety=10, market_fit=10)
+        r = ScreeningResult(
+            verdict="REJECT", clarity=10, feasibility=10, safety=10, market_fit=10
+        )
         d = r.to_dict()
         assert d["verdict"] == "REJECT"
         assert "scores" in d
@@ -28,14 +29,16 @@ class TestScreeningResult:
 
 class TestParseResponse:
     def test_valid_json(self):
-        raw = json.dumps({
-            "verdict": "ADMIT",
-            "clarity": 85,
-            "feasibility": 70,
-            "safety": 90,
-            "market_fit": 60,
-            "feedback": "Good agent.",
-        })
+        raw = json.dumps(
+            {
+                "verdict": "ADMIT",
+                "clarity": 85,
+                "feasibility": 70,
+                "safety": 90,
+                "market_fit": 60,
+                "feedback": "Good agent.",
+            }
+        )
         r = _parse_response(raw)
         assert r.verdict == "ADMIT"
         assert r.clarity == 85
@@ -60,14 +63,16 @@ class TestParseResponse:
 
 class TestScreenAgent:
     def test_screen_returns_result(self, sample_agent_spec, mock_ollama_response):
-        response = json.dumps({
-            "verdict": "ADMIT",
-            "clarity": 80,
-            "feasibility": 75,
-            "safety": 85,
-            "market_fit": 70,
-            "feedback": "Strong spec. Consider adding error handling documentation.",
-        })
+        response = json.dumps(
+            {
+                "verdict": "ADMIT",
+                "clarity": 80,
+                "feasibility": 75,
+                "safety": 85,
+                "market_fit": 70,
+                "feedback": "Strong spec. Consider adding error handling documentation.",
+            }
+        )
         mock = mock_ollama_response(responses=[response])
         result = screen_agent(sample_agent_spec, mock)
         assert isinstance(result, ScreeningResult)

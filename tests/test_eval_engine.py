@@ -1,8 +1,6 @@
 """Tests for core.eval_engine — evaluation engine."""
 
 import json
-import pytest
-from pathlib import Path
 
 from core.eval_engine import (
     Challenge,
@@ -70,10 +68,14 @@ class TestRunChallenge:
                 "judge_prompt": "Rate the output.",
             },
         )
-        mock = mock_ollama_response(responses=[
-            "Here is my synthesized response...",  # agent output
-            json.dumps({"score": 75, "passed": True, "details": "Good job."}),  # judge
-        ])
+        mock = mock_ollama_response(
+            responses=[
+                "Here is my synthesized response...",  # agent output
+                json.dumps(
+                    {"score": 75, "passed": True, "details": "Good job."}
+                ),  # judge
+            ]
+        )
         result = run_challenge(sample_agent_spec, challenge, mock)
         assert isinstance(result, ChallengeResult)
         assert result.score == 75
@@ -112,23 +114,45 @@ class TestRunChallenge:
 class TestRunEval:
     def test_full_eval(self, sample_agent_spec, mock_ollama_response):
         challenges = [
-            Challenge(id="r/test", name="R Test", category="reliability",
-                      evaluation={"type": "llm_judge"}),
-            Challenge(id="c/test", name="C Test", category="cost",
-                      evaluation={"type": "llm_judge"}),
-            Challenge(id="s/test", name="S Test", category="safety",
-                      evaluation={"type": "llm_judge"}),
-            Challenge(id="sp/test", name="Sp Test", category="speed",
-                      evaluation={"type": "llm_judge"}),
+            Challenge(
+                id="r/test",
+                name="R Test",
+                category="reliability",
+                evaluation={"type": "llm_judge"},
+            ),
+            Challenge(
+                id="c/test",
+                name="C Test",
+                category="cost",
+                evaluation={"type": "llm_judge"},
+            ),
+            Challenge(
+                id="s/test",
+                name="S Test",
+                category="safety",
+                evaluation={"type": "llm_judge"},
+            ),
+            Challenge(
+                id="sp/test",
+                name="Sp Test",
+                category="speed",
+                evaluation={"type": "llm_judge"},
+            ),
         ]
         # Each challenge needs 2 responses: agent output + judge verdict
         judge_response = json.dumps({"score": 80, "passed": True, "details": "Good."})
-        mock = mock_ollama_response(responses=[
-            "Agent output 1", judge_response,
-            "Agent output 2", judge_response,
-            "Agent output 3", judge_response,
-            "Agent output 4", judge_response,
-        ])
+        mock = mock_ollama_response(
+            responses=[
+                "Agent output 1",
+                judge_response,
+                "Agent output 2",
+                judge_response,
+                "Agent output 3",
+                judge_response,
+                "Agent output 4",
+                judge_response,
+            ]
+        )
         result = run_eval(sample_agent_spec, challenges=challenges, ollama=mock)
         assert isinstance(result, EvalResult)
         assert result.agent_id == sample_agent_spec.id
@@ -139,8 +163,12 @@ class TestRunEval:
         judge_response = json.dumps({"score": 70, "passed": True, "details": "OK."})
         mock = mock_ollama_response(responses=["Output", judge_response])
         challenges = [
-            Challenge(id="test/ch", name="Test", category="reliability",
-                      evaluation={"type": "llm_judge"}),
+            Challenge(
+                id="test/ch",
+                name="Test",
+                category="reliability",
+                evaluation={"type": "llm_judge"},
+            ),
         ]
         result = run_eval(sample_agent_spec, challenges=challenges, ollama=mock)
         d = result.to_dict()

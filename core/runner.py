@@ -51,6 +51,7 @@ class RunResult:
 
 # -- Entrypoint type detection ------------------------------------------------
 
+
 def detect_entrypoint_type(entrypoint: str) -> str:
     """Detect the type of agent entrypoint.
 
@@ -67,6 +68,7 @@ def detect_entrypoint_type(entrypoint: str) -> str:
 
 
 # -- Main runner ---------------------------------------------------------------
+
 
 def run_agent(
     spec: AgentSpec,
@@ -104,11 +106,12 @@ def run_agent(
             duration_seconds=0.0,
             success=False,
             error=f"Unknown entrypoint type: '{entrypoint}'. "
-                  f"Use a .py file, docker:// URI, or http(s):// URL.",
+            f"Use a .py file, docker:// URI, or http(s):// URL.",
         )
 
 
 # -- Python script runner -----------------------------------------------------
+
 
 def run_python_agent(
     script_path: str,
@@ -135,11 +138,17 @@ def run_python_agent(
         RunResult with the agent's output.
     """
     start = time.time()
-    resolved = Path(cwd or ".") / script_path if not Path(script_path).is_absolute() else Path(script_path)
+    resolved = (
+        Path(cwd or ".") / script_path
+        if not Path(script_path).is_absolute()
+        else Path(script_path)
+    )
 
     if not resolved.exists():
         return RunResult(
-            output="", duration_seconds=0.0, success=False,
+            output="",
+            duration_seconds=0.0,
+            success=False,
             error=f"Agent script not found: {resolved}",
         )
 
@@ -185,20 +194,26 @@ def run_python_agent(
     except subprocess.TimeoutExpired:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=f"Agent timed out after {timeout}s",
         )
     except Exception as e:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=str(e),
         )
 
 
 def _call_run_function(script_path: Path, prompt: str) -> str:
     """Import a Python script and call its run() function."""
-    spec_loader = importlib.util.spec_from_file_location("agent_module", str(script_path))
+    spec_loader = importlib.util.spec_from_file_location(
+        "agent_module", str(script_path)
+    )
     if spec_loader is None or spec_loader.loader is None:
         raise ImportError(f"Cannot load {script_path}")
 
@@ -213,6 +228,7 @@ def _call_run_function(script_path: Path, prompt: str) -> str:
 
 
 # -- Docker runner -------------------------------------------------------------
+
 
 def run_docker_agent(
     image_uri: str,
@@ -239,11 +255,16 @@ def run_docker_agent(
     try:
         proc = subprocess.run(
             [
-                "docker", "run", "--rm",
-                "--network", "none",  # No network by default (safety)
-                "-i",                 # Accept stdin
-                "--memory", "512m",   # Memory limit
-                "--cpus", "1",        # CPU limit
+                "docker",
+                "run",
+                "--rm",
+                "--network",
+                "none",  # No network by default (safety)
+                "-i",  # Accept stdin
+                "--memory",
+                "512m",  # Memory limit
+                "--cpus",
+                "1",  # CPU limit
                 image,
             ],
             input=prompt,
@@ -266,22 +287,31 @@ def run_docker_agent(
                 duration_seconds=round(duration, 2),
                 success=False,
                 error=proc.stderr.strip() or f"Container exit code {proc.returncode}",
-                metadata={"method": "docker", "image": image, "exit_code": proc.returncode},
+                metadata={
+                    "method": "docker",
+                    "image": image,
+                    "exit_code": proc.returncode,
+                },
             )
     except FileNotFoundError:
         return RunResult(
-            output="", duration_seconds=0.0, success=False,
+            output="",
+            duration_seconds=0.0,
+            success=False,
             error="Docker is not installed or not in PATH.",
         )
     except subprocess.TimeoutExpired:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=f"Docker container timed out after {timeout}s",
         )
 
 
 # -- API endpoint runner -------------------------------------------------------
+
 
 def run_api_agent(
     endpoint_url: str,
@@ -318,7 +348,9 @@ def run_api_agent(
             if resp.status_code == 200:
                 try:
                     data = resp.json()
-                    output = data.get("output", data.get("response", data.get("result", str(data))))
+                    output = data.get(
+                        "output", data.get("response", data.get("result", str(data)))
+                    )
                 except (json.JSONDecodeError, ValueError):
                     output = resp.text
 
@@ -334,29 +366,40 @@ def run_api_agent(
                     duration_seconds=round(duration, 2),
                     success=False,
                     error=f"HTTP {resp.status_code}: {resp.text[:200]}",
-                    metadata={"method": "api", "endpoint": endpoint_url, "status": resp.status_code},
+                    metadata={
+                        "method": "api",
+                        "endpoint": endpoint_url,
+                        "status": resp.status_code,
+                    },
                 )
     except httpx.TimeoutException:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=f"API request timed out after {timeout}s",
         )
     except httpx.ConnectError:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=f"Cannot connect to {endpoint_url}",
         )
     except Exception as e:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=str(e),
         )
 
 
 # -- Framework-specific runners ------------------------------------------------
+
 
 def run_langchain_agent(
     agent_or_chain: Any,
@@ -391,7 +434,9 @@ def run_langchain_agent(
             result = agent_or_chain(prompt)
         else:
             return RunResult(
-                output="", duration_seconds=0.0, success=False,
+                output="",
+                duration_seconds=0.0,
+                success=False,
                 error="LangChain agent must have invoke(), run(), or __call__()",
             )
 
@@ -399,7 +444,10 @@ def run_langchain_agent(
 
         # Extract output from various LangChain result formats
         if isinstance(result, dict):
-            output = result.get("output", result.get("result", result.get("text", str(result))))
+            val = result.get(
+                "output", result.get("result", result.get("text", str(result)))
+            )
+            output = str(val) if val is not None else ""
         elif isinstance(result, str):
             output = result
         else:
@@ -409,12 +457,17 @@ def run_langchain_agent(
             output=output,
             duration_seconds=round(duration, 2),
             success=True,
-            metadata={"method": "langchain", "agent_type": type(agent_or_chain).__name__},
+            metadata={
+                "method": "langchain",
+                "agent_type": type(agent_or_chain).__name__,
+            },
         )
     except Exception as e:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=f"LangChain error: {e}",
         )
 
@@ -442,7 +495,9 @@ def run_crewai_agent(
             result = crew.kickoff(inputs={"task": prompt})
         else:
             return RunResult(
-                output="", duration_seconds=0.0, success=False,
+                output="",
+                duration_seconds=0.0,
+                success=False,
                 error="CrewAI crew must have kickoff() method.",
             )
 
@@ -458,7 +513,9 @@ def run_crewai_agent(
     except Exception as e:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=f"CrewAI error: {e}",
         )
 
@@ -494,6 +551,8 @@ def run_callable_agent(
     except Exception as e:
         duration = time.time() - start
         return RunResult(
-            output="", duration_seconds=round(duration, 2), success=False,
+            output="",
+            duration_seconds=round(duration, 2),
+            success=False,
             error=str(e),
         )

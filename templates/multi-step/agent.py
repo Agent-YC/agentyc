@@ -4,12 +4,12 @@ This agent breaks complex problems into sub-tasks and synthesizes results.
 """
 
 from dataclasses import dataclass
-from typing import Any
 
 
 @dataclass
 class Step:
     """A single step in the agent's reasoning chain."""
+
     number: int
     description: str
     result: str = ""
@@ -60,7 +60,9 @@ class ReasoningAgent:
 
     def synthesize(self) -> str:
         """Synthesize all step results into a final response."""
-        parts = [f"Step {s.number}: {s.description}\n  → {s.result}" for s in self.steps]
+        parts = [
+            f"Step {s.number}: {s.description}\n  → {s.result}" for s in self.steps
+        ]
         return "\n".join(parts)
 
 
@@ -84,5 +86,6 @@ def run(task: str) -> str:
 
 if __name__ == "__main__":
     import sys
+
     task = " ".join(sys.argv[1:]) or "Hello, world!"
     print(run(task))

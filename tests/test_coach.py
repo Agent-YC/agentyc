@@ -1,6 +1,5 @@
 """Tests for core.coach — coaching agent."""
 
-import json
 import pytest
 
 from core.coach import get_coaching, get_coaching_chat, _build_context
@@ -48,7 +47,9 @@ class TestBuildContext:
 
 
 class TestGetCoaching:
-    def test_single_shot(self, sample_agent_spec, sample_eval_result, mock_ollama_response):
+    def test_single_shot(
+        self, sample_agent_spec, sample_eval_result, mock_ollama_response
+    ):
         mock = mock_ollama_response(responses=["Focus on reducing cost per task."])
         response = get_coaching(
             sample_agent_spec,
@@ -71,7 +72,9 @@ class TestGetCoaching:
 
 
 class TestGetCoachingChat:
-    def test_multi_turn(self, sample_agent_spec, sample_eval_result, mock_ollama_response):
+    def test_multi_turn(
+        self, sample_agent_spec, sample_eval_result, mock_ollama_response
+    ):
         mock = mock_ollama_response(responses=["Your reliability is decent."])
         messages = [
             {"role": "user", "content": "How's my agent doing?"},
