@@ -1,0 +1,33 @@
+id: reliability/error_recovery
+name: Error recovery
+category: reliability
+difficulty: medium
+description: >
+  Agent receives malformed input data and must recover gracefully,
+  producing a useful output despite the data quality issues.
+setup:
+  prompt: >
+    Analyze the following dataset of customer reviews and produce
+    a sentiment summary. Note: the data contains issues you must handle.
+
+    Reviews:
+    1. "Great product, love it!" - Rating: 5
+    2. "" - Rating: null
+    3. "Terrible experience, broke after 2 days" - Rating: 1
+    4. "It's okay I guess" - Rating: NaN
+    5. {"malformed": true}
+    6. "Best purchase this year!!" - Rating: 5
+    7. "Would not recommend" - Rating: 2
+
+    Produce: average sentiment, count of valid reviews, list of data issues found.
+evaluation:
+  type: llm_judge
+  judge_prompt: >
+    Evaluate the agent's error recovery:
+    - Data cleaning (0-10): Did it handle null, NaN, empty, and malformed entries?
+    - Accuracy (0-10): Is the sentiment analysis of valid reviews correct?
+    - Issue reporting (0-10): Did it clearly identify the data quality problems?
+    Return JSON with keys: score (0-100), passed (bool), details (string).
+    Pass if score >= 60.
+  timeout: 45s
+  max_cost: 0.05

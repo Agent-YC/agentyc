@@ -1,0 +1,30 @@
+id: reliability/retry_under_failure
+name: Retry under failure
+category: reliability
+difficulty: hard
+description: >
+  Agent must complete a task where the primary tool fails intermittently.
+  Tests error handling, retry logic, and graceful degradation.
+setup:
+  prompt: >
+    Search for the current population of Tokyo, Japan.
+    Your web_search tool will fail on the first two attempts
+    with a timeout error. You must handle these failures
+    gracefully and retry until successful. Report the final
+    answer with your source.
+
+    Simulate tool behavior:
+    - Attempt 1: TOOL_ERROR: Connection timeout
+    - Attempt 2: TOOL_ERROR: Connection timeout
+    - Attempt 3: SUCCESS: "Tokyo population: ~14 million (2024, Tokyo Metro Gov)"
+evaluation:
+  type: llm_judge
+  judge_prompt: >
+    Evaluate the agent's error handling:
+    - Error awareness (0-10): Does it acknowledge the failures?
+    - Retry strategy (0-10): Does it retry appropriately?
+    - Final answer (0-10): Does it provide the correct answer with source?
+    Return JSON with keys: score (0-100), passed (bool), details (string).
+    Pass if score >= 60.
+  timeout: 45s
+  max_cost: 0.05

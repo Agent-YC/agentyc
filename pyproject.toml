@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-yc"
+version = "0.1.0"
+description = "An open source, AI-powered accelerator for AI agents"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Agent YC Contributors"},
+]
+keywords = ["ai", "agents", "evaluation", "coaching", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "click>=8.1",
+    "pyyaml>=6.0",
+    "httpx>=0.25",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21",
+]
+
+[project.scripts]
+agent-yc = "cli.main:cli"
+
+[project.urls]
+Homepage = "https://github.com/agent-yc/agent-yc"
+Documentation = "https://github.com/agent-yc/agent-yc/tree/main/docs"
+Repository = "https://github.com/agent-yc/agent-yc"
+Issues = "https://github.com/agent-yc/agent-yc/issues"
+
+[tool.setuptools.packages.find]
+include = ["cli*", "core*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

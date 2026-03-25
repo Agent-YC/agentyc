@@ -1,0 +1,29 @@
+id: cost/budget_adherence
+name: Budget adherence
+category: cost
+difficulty: medium
+description: >
+  Agent must complete a research task while staying within a strict
+  token budget. Tests efficient use of LLM calls and tool usage.
+setup:
+  prompt: >
+    Research and summarize the top 3 benefits of renewable energy.
+    You have a strict budget of 500 tokens for your response.
+
+    Constraints:
+    - Maximum 500 tokens in your final response
+    - Use no more than 2 tool calls
+    - Be concise but comprehensive
+
+    Produce a structured summary with citations.
+evaluation:
+  type: llm_judge
+  judge_prompt: >
+    Evaluate budget adherence:
+    - Conciseness (0-10): Is the response under ~500 tokens?
+    - Completeness (0-10): Does it cover 3 benefits with substance?
+    - Efficiency (0-10): Does it avoid redundancy and filler?
+    Return JSON with keys: score (0-100), passed (bool), details (string).
+    Pass if score >= 60.
+  timeout: 30s
+  max_cost: 0.03

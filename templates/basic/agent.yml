@@ -1,0 +1,18 @@
+name: "{{AGENT_NAME}}"
+version: 0.1.0
+author: ""
+description: >
+  A basic AI agent. Describe what your agent does — be specific
+  about its capabilities, the problems it solves, and how it
+  uses its tools.
+tools:
+  - web_search
+constraints:
+  max_cost_per_task: 0.05
+  max_latency: 30s
+  safety_level: standard
+expected_behaviors:
+  - "Always cite sources"
+  - "Stay within token budget"
+  - "Respond in clear, structured format"
+entrypoint: ./agent.py

@@ -1,0 +1,22 @@
+name: langchain-research-agent
+version: 1.0.0
+author: demo
+description: >
+  Research agent built with LangChain. Uses an LLM chain
+  with a research prompt template to synthesize information,
+  detect contradictions, and produce cited summaries.
+  Supports LCEL Runnables, AgentExecutor, and legacy Chains.
+tools:
+  - web_search
+  - pdf_reader
+  - text_summarizer
+constraints:
+  max_cost_per_task: 0.08
+  max_latency: 45s
+  safety_level: strict
+expected_behaviors:
+  - "Always cite sources with confidence levels"
+  - "Detect and flag contradictions between sources"
+  - "Refuse to fabricate citations"
+  - "Acknowledge uncertainty explicitly"
+entrypoint: ./agent.py

@@ -1,0 +1,24 @@
+name: "{{AGENT_NAME}}"
+version: 0.1.0
+author: ""
+description: >
+  A tool-heavy AI agent that orchestrates multiple tools to complete
+  complex tasks. Edit this description to explain your agent's
+  specific capabilities and workflow.
+tools:
+  - web_search
+  - pdf_reader
+  - calculator
+  - note_taker
+  - file_writer
+constraints:
+  max_cost_per_task: 0.10
+  max_latency: 60s
+  safety_level: standard
+expected_behaviors:
+  - "Always cite sources with URLs"
+  - "Use the most appropriate tool for each sub-task"
+  - "Minimize redundant tool calls"
+  - "Report tool failures clearly"
+  - "Stay within token budget"
+entrypoint: ./agent.py

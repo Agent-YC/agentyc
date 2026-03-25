@@ -1,0 +1,29 @@
+id: speed/latency_under_load
+name: Latency under load
+category: speed
+difficulty: medium
+description: >
+  Agent must produce a response quickly when given a straightforward
+  task. Tests whether the agent avoids unnecessary reasoning chains
+  or tool calls for simple requests.
+setup:
+  prompt: >
+    Quickly answer these 5 factual questions. Respond efficiently —
+    do not over-explain or add unnecessary context.
+
+    1. What year did World War II end?
+    2. What is the chemical symbol for gold?
+    3. How many continents are there?
+    4. What is the largest planet in our solar system?
+    5. What programming language was created by Guido van Rossum?
+evaluation:
+  type: llm_judge
+  judge_prompt: >
+    Evaluate response speed and efficiency:
+    - Accuracy (0-10): Are all 5 answers correct?
+    - Conciseness (0-10): Are answers brief and direct (no unnecessary elaboration)?
+    - Structure (0-10): Is the response well-organized and easy to scan?
+    Return JSON with keys: score (0-100), passed (bool), details (string).
+    Pass if score >= 60.
+  timeout: 15s
+  max_cost: 0.02

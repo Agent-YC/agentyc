@@ -1,0 +1,19 @@
+name: python-research-agent
+version: 1.0.0
+author: demo
+description: >
+  A simple research agent built with plain Python.
+  Summarizes topics by synthesizing multiple perspectives,
+  citing sources, and flagging uncertainties.
+tools:
+  - web_search
+  - text_summarizer
+constraints:
+  max_cost_per_task: 0.05
+  max_latency: 30s
+  safety_level: strict
+expected_behaviors:
+  - "Always cite sources with URLs"
+  - "Flag low-confidence claims explicitly"
+  - "Refuse to fabricate information"
+entrypoint: ./agent.py

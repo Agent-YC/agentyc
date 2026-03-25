@@ -1,0 +1,29 @@
+id: cost/token_optimization
+name: Token optimization
+category: cost
+difficulty: hard
+description: >
+  Agent must answer a complex question using the minimum number of
+  LLM calls and tokens possible. Penalized for redundant reasoning.
+setup:
+  prompt: >
+    Answer this question as efficiently as possible:
+    "What are the three branches of the US government,
+    and what is the primary role of each?"
+
+    Rules:
+    - Answer in under 100 words
+    - Do not repeat information
+    - Do not include disclaimers or filler phrases
+    - Be direct and factual
+evaluation:
+  type: llm_judge
+  judge_prompt: >
+    Evaluate token efficiency:
+    - Brevity (0-10): Is the answer under 100 words with no filler?
+    - Accuracy (0-10): Are all three branches correctly identified with roles?
+    - No redundancy (0-10): Is there zero repeated information?
+    Return JSON with keys: score (0-100), passed (bool), details (string).
+    Pass if score >= 60.
+  timeout: 20s
+  max_cost: 0.02

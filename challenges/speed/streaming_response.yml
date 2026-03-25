@@ -1,0 +1,30 @@
+id: speed/streaming_response
+name: Streaming response
+category: speed
+difficulty: medium
+description: >
+  Agent must produce a structured response incrementally, providing
+  useful partial results before the full output is complete.
+setup:
+  prompt: >
+    Generate a project plan for building a simple todo app.
+    Structure your response in clear sections that each provide
+    standalone value:
+
+    1. Tech stack recommendation (provide this first)
+    2. Core features list (provide next)
+    3. Implementation timeline (provide last)
+
+    Each section should be independently useful even if the
+    remaining sections aren't available yet.
+evaluation:
+  type: llm_judge
+  judge_prompt: >
+    Evaluate streaming-friendly structure:
+    - Incremental value (0-10): Does each section work independently?
+    - Ordering (0-10): Are sections ordered from most to least immediately useful?
+    - Completeness (0-10): Does the full response cover all three sections?
+    Return JSON with keys: score (0-100), passed (bool), details (string).
+    Pass if score >= 60.
+  timeout: 30s
+  max_cost: 0.05

@@ -1,0 +1,22 @@
+name: {{AGENT_NAME}}
+version: 1.0.0
+author: demo
+description: >
+  Multi-agent research crew built with CrewAI.
+  A researcher agent gathers information and a writer agent
+  produces a polished, cited synthesis. Demonstrates
+  multi-agent orchestration with Agent YC.
+tools:
+  - web_search
+  - pdf_reader
+  - text_editor
+constraints:
+  max_cost_per_task: 0.12
+  max_latency: 60s
+  safety_level: strict
+expected_behaviors:
+  - "Researcher gathers from multiple sources"
+  - "Writer produces clear, cited output"
+  - "Both agents refuse to fabricate information"
+  - "Final output includes confidence levels"
+entrypoint: ./agent.py

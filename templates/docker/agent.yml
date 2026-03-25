@@ -1,0 +1,19 @@
+name: {{AGENT_NAME}}
+version: 1.0.0
+author: demo
+description: >
+  Containerized research agent running in Docker.
+  Demonstrates sandboxed execution with resource limits.
+  Receives tasks via stdin, returns results via stdout.
+tools:
+  - web_search
+  - text_summarizer
+constraints:
+  max_cost_per_task: 0.05
+  max_latency: 60s
+  safety_level: strict
+expected_behaviors:
+  - "Run in isolated container with no network access"
+  - "Respect memory and CPU limits"
+  - "Return structured JSON output"
+entrypoint: docker://demo-agent:latest

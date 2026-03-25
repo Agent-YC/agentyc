@@ -1,0 +1,20 @@
+name: api-deployed-agent
+version: 1.0.0
+author: demo
+description: >
+  Research agent deployed as an HTTP API endpoint.
+  Accepts POST requests with a task and returns JSON.
+  Demonstrates how to evaluate agents deployed
+  on cloud platforms (Fly.io, Railway, AWS, etc).
+tools:
+  - web_search
+  - text_summarizer
+constraints:
+  max_cost_per_task: 0.05
+  max_latency: 30s
+  safety_level: standard
+expected_behaviors:
+  - "Accepts POST {task: '...'} and returns {output: '...'}"
+  - "Returns structured JSON responses"
+  - "Handles errors gracefully with proper HTTP status codes"
+entrypoint: http://localhost:8080/run

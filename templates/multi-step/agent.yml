@@ -1,0 +1,22 @@
+name: "{{AGENT_NAME}}"
+version: 0.1.0
+author: ""
+description: >
+  A multi-step reasoning agent that breaks complex problems into
+  sub-tasks, executes them in sequence, and synthesizes results.
+  Edit this to describe your specific workflow.
+tools:
+  - web_search
+  - note_taker
+constraints:
+  max_cost_per_task: 0.15
+  max_latency: 120s
+  safety_level: strict
+expected_behaviors:
+  - "Break complex tasks into explicit sub-steps"
+  - "Show reasoning chain for each step"
+  - "Validate intermediate results before proceeding"
+  - "Flag low-confidence conclusions"
+  - "Always cite sources"
+  - "Stay within token budget"
+entrypoint: ./agent.py

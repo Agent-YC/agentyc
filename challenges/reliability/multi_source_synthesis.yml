@@ -1,0 +1,32 @@
+id: reliability/multi_source_synthesis
+name: Multi-source synthesis
+category: reliability
+difficulty: medium
+description: >
+  Agent must synthesize information from 5 provided sources
+  into a coherent summary. Sources contain one deliberate
+  contradiction that should be flagged.
+setup:
+  prompt: >
+    You have been given 5 research papers about the effects of
+    caffeine on cognitive performance. Synthesize these into a
+    structured summary. One paper contradicts the others on a
+    key finding — identify and flag this contradiction.
+
+    Paper A: Caffeine improves reaction time by 12% (n=200, p<0.01)
+    Paper B: Caffeine enhances working memory at moderate doses (200mg)
+    Paper C: Caffeine has NO significant effect on reaction time (n=150, p=0.34)
+    Paper D: Caffeine reduces error rates in sustained attention tasks
+    Paper E: High caffeine doses (>400mg) impair fine motor control
+evaluation:
+  type: llm_judge
+  judge_prompt: >
+    Rate the synthesis on three dimensions:
+    - Completeness (0-10): Does it cover all 5 sources?
+    - Accuracy (0-10): Does it faithfully represent findings?
+    - Contradiction detection (0-10): Does it identify the Paper A vs Paper C conflict?
+    Return JSON with keys: score (0-100), passed (bool), details (string).
+    Score = (completeness + accuracy + contradiction_detection) / 30 * 100
+    Pass if score >= 60.
+  timeout: 60s
+  max_cost: 0.10
