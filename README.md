@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/agent-yc/agent-yc/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/agent-yc/agent-yc/ci.yml?branch=main&style=for-the-badge" alt="CI Status"></a>
+<a href="https://github.com/Agent-YC/agentyc/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/Agent-YC/agentyc/ci.yml?branch=main&style=for-the-badge" alt="CI Status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=for-the-badge" alt="Python 3.10+"></a>
   <a href="https://ollama.ai"><img src="https://img.shields.io/badge/Ollama-Local_LLM-black.svg?style=for-the-badge" alt="Ollama"></a>
@@ -22,7 +22,7 @@ Works with any agent framework: LangChain, CrewAI, AutoGen, Docker, deployed API
 Runtime: **Python 3.10+** and **[Ollama](https://ollama.ai)**.
 
 ```bash
-git clone https://github.com/agent-yc/agent-yc
+git clone https://github.com/Agent-YC/agentyc
 cd agent-yc
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
@@ -279,7 +279,7 @@ output = run_agent(spec, "Task prompt...", cwd="./my-agent")
 ## Development
 
 ```bash
-git clone https://github.com/agent-yc/agent-yc
+git clone https://github.com/Agent-YC/agentyc
 cd agent-yc
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
