@@ -1,7 +1,7 @@
 # 🚀 Agent YC — AI-Powered Accelerator for AI Agents
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6b9e7251-6a98-4b51-9399-f189fcc4095b" alt="Agent YC Logo" width="600">
+  <img src="https://github.com/user-attachments/assets/6b9e7251-6a98-4b51-9399-f189fcc4095b" alt="Agent YC Logo" width="300" height="300">
 </p>
 
 <p align="center">
