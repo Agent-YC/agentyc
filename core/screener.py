@@ -32,6 +32,7 @@ class ScreeningResult:
     safety: int = 0
     market_fit: int = 0
     feedback: str = ""
+    pivot_suggestion: str = ""
 
     @property
     def overall(self) -> int:
@@ -53,6 +54,7 @@ class ScreeningResult:
                 "overall": self.overall,
             },
             "feedback": self.feedback,
+            "pivot_suggestion": self.pivot_suggestion,
         }
 
 
@@ -86,7 +88,8 @@ Respond ONLY with valid JSON in this exact format:
   "feasibility": <0-100>,
   "safety": <0-100>,
   "market_fit": <0-100>,
-  "feedback": "<2-4 sentences of specific, actionable feedback>"
+  "feedback": "<2-4 sentences of specific, actionable feedback>",
+  "pivot_suggestion": "<optional 1-sentence pivot suggestion if idea is a tarpit>"
 }
 """
 
@@ -142,6 +145,7 @@ def _parse_response(raw: str) -> ScreeningResult:
         safety=_safe_int(data.get("safety", 0)),
         market_fit=_safe_int(data.get("market_fit", 0)),
         feedback=data.get("feedback", ""),
+        pivot_suggestion=data.get("pivot_suggestion", ""),
     )
 
 

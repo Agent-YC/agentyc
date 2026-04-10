@@ -98,6 +98,16 @@ def screen(ctx: click.Context, spec: str) -> None:
         )
     )
 
+    if result.pivot_suggestion and result.verdict in ("CONDITIONAL", "REJECT"):
+        console.print()
+        console.print(
+            Panel(
+                f"[italic]{result.pivot_suggestion}[/italic]",
+                title="[bold yellow]💡 YC Partner Pivot Suggestion[/bold yellow]",
+                border_style="yellow",
+            )
+        )
+
     # Save result
     agentyc_dir = Path.cwd() / ".agentyc" / "screenings"
     agentyc_dir.mkdir(parents=True, exist_ok=True)

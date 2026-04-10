@@ -32,6 +32,7 @@ from cli.commands.eval import eval_cmd
 from cli.commands.coach import coach
 from cli.commands.leaderboard import leaderboard
 from cli.commands.publish import publish
+from cli.commands.demo_day import demo_day
 
 cli.add_command(init_cmd, "init")
 cli.add_command(screen)
@@ -39,7 +40,7 @@ cli.add_command(eval_cmd, "eval")
 cli.add_command(coach)
 cli.add_command(leaderboard)
 cli.add_command(publish)
-
+cli.add_command(demo_day, "demo-day")
 
 if __name__ == "__main__":
     cli()

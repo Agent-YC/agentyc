@@ -161,13 +161,13 @@ def validate_spec_data(
                     errors.append("'max_cost_per_task' must be a number.")
 
     # --- entrypoint existence (only when spec_dir known) ---
-    entrypoint = data.get("entrypoint")
+    entrypoint = data.get("entrypoint", "")
     if entrypoint and spec_dir is not None:
-        ep_path = spec_dir / entrypoint
-        if not ep_path.exists() and not entrypoint.startswith("docker://"):
-            errors.append(
-                f"Entrypoint not found: '{entrypoint}' (looked in {spec_dir})"
-            )
+        if entrypoint.startswith("./") or entrypoint.startswith("/"):
+            # Only strictly validate existence for relative or absolute paths
+            ep_path = spec_dir / entrypoint if entrypoint.startswith("./") else Path(entrypoint)
+            if not ep_path.exists():
+                errors.append(f"Entrypoint not found: '{entrypoint}'")
 
     return errors
 

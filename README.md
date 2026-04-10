@@ -60,8 +60,8 @@ agent.yml (spec)
 ┌──────────────────────────────────────┐
 │           agent-yc CLI               │
 │                                      │
-│  screen ──→ eval ──→ coach ──→ grad  │
-│                                      │
+│  screen ──→ eval ──→ coach ──→ demo-day  │
+│                                          │
 │  ┌─────────┐       ┌─────────┐      │
 │  │  LOCAL   │       │  CLOUD  │      │
 │  │  Ollama  │       │  (Soon) │      │
@@ -79,9 +79,9 @@ Python / Docker / API / LangChain / CrewAI
 - **[Screening](core/screener.py)** — meta-agent reviews your spec for clarity, feasibility, safety, and market fit. Verdicts: ADMIT / CONDITIONAL / REJECT.
 - **[Evaluation engine](core/eval_engine.py)** — 10 challenges across 4 dimensions (reliability, cost, safety, speed) with LLM judge, exact match, regex, and script eval types.
 - **[Scoring](core/scorer.py)** — weighted 4-dimension scorecard (30% reliability, 25% safety, 25% cost, 20% speed). Agents scoring ≥75 graduate.
+- **[Demo Day](core/demo_day.py)** — simulated YC demo day. Pitch your graduated agent to a multi-persona VC panel (Visionary, Pragmatist, Cynic) to secure a simulated SAFE and Seed Valuation Cap valuation based on your eval metrics.
 - **[Coaching](core/coach.py)** — AI coach gives YC-partner-style feedback. Single-shot or interactive REPL. References your scores and failures.
-- **[Agent runner](core/runner.py)** — executes real agents via Python import, subprocess, Docker container, or HTTP API. Native support for LangChain and CrewAI.
-- **[Local storage](core/db.py)** — SQLite tracking of all agents, evaluations, and coaching sessions. Everything stays on your machine.
+- **[Agent runner / Eval](core/eval_engine.py)** — native evaluation! Execute real agents locally via shell interpolation (e.g. `claude-code -p "{{prompt}}"`) or traditional standard input bridging.
 - **[Challenge registry](challenges/)** — 10 built-in challenges. Write your own in YAML.
 - **[Templates](templates/)** — `basic`, `tool-heavy`, and `multi-step` agent project scaffolds.
 - **[Demo agents](demo/)** — working examples for Python, LangChain, CrewAI, Docker, and HTTP API agents.
@@ -110,7 +110,11 @@ expected_behaviors:
 entrypoint: ./agent.py
 ```
 
-Entrypoint types: `./agent.py` (Python), `docker://image:tag` (Docker), `https://url/run` (API).
+Entrypoint types:
+- **Simulation**: `simulate` (uses a local LLM to guess what the agent would do based on its spec).
+- **Native Evaluation**: 
+  - Subprocess pipe (via STDIN): `./agent.py` or `npm run agent`
+  - Templated Arguments: `claude-code --prompt "{{prompt}}"` (Agent YC securely interpolates the eval challenge prompt into the shell argument).
 
 ## Scoring
 
@@ -198,6 +202,7 @@ agent-yc eval --challenge <id>    # Run specific challenge
 agent-yc eval --ci --min-score 75 # CI mode with exit code
 agent-yc coach [question]         # Single-shot coaching
 agent-yc coach                    # Interactive coaching REPL
+agent-yc demo-day                 # Pitch graduated agent and generate valuation term sheet
 agent-yc leaderboard              # Public leaderboard (coming soon)
 agent-yc publish                  # Publish to marketplace (coming soon)
 

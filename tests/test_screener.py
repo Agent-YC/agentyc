@@ -37,12 +37,14 @@ class TestParseResponse:
                 "safety": 90,
                 "market_fit": 60,
                 "feedback": "Good agent.",
+                "pivot_suggestion": "None."
             }
         )
         r = _parse_response(raw)
         assert r.verdict == "ADMIT"
         assert r.clarity == 85
         assert r.feedback == "Good agent."
+        assert r.pivot_suggestion == "None."
 
     def test_invalid_json_falls_back(self):
         r = _parse_response("not json at all")
@@ -71,6 +73,7 @@ class TestScreenAgent:
                 "safety": 85,
                 "market_fit": 70,
                 "feedback": "Strong spec. Consider adding error handling documentation.",
+                "pivot_suggestion": ""
             }
         )
         mock = mock_ollama_response(responses=[response])

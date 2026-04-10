@@ -163,9 +163,37 @@ def run_challenge(
     """
     start = time.time()
 
-    # ---- Step 1: Simulate agent behaviour ------------------------------------
-    agent_prompt = _build_agent_prompt(spec, challenge)
-    agent_output = ollama.generate(agent_prompt, temperature=0.5)
+    # ---- Step 1: Simulate or Execute agent behaviour -------------------------
+    is_simulation = spec.entrypoint.lower() in ("simulate", "simulate-ollama", "ollama", "")
+    
+    if is_simulation:
+        agent_prompt = _build_agent_prompt(spec, challenge)
+        agent_output = ollama.generate(agent_prompt, temperature=0.5)
+    else:
+        import shlex
+        import subprocess
+        
+        task_prompt = challenge.setup.get("prompt", challenge.description)
+        args = shlex.split(spec.entrypoint)
+        
+        has_prompt_template = False
+        for i, arg in enumerate(args):
+            if "{{prompt}}" in arg:
+                args[i] = arg.replace("{{prompt}}", task_prompt)
+                has_prompt_template = True
+                
+        try:
+            if has_prompt_template:
+                # Prompt injected into arguments
+                result = subprocess.run(args, capture_output=True, text=True, timeout=60)
+            else:
+                # Fallback to stdin pipeline
+                result = subprocess.run(args, input=task_prompt, capture_output=True, text=True, timeout=60)
+            agent_output = result.stdout + "\n" + result.stderr
+        except subprocess.TimeoutExpired:
+            agent_output = "Error: Agent execution timed out after 60 seconds."
+        except Exception as e:
+            agent_output = f"Error executing agent: {e}"
 
     # ---- Step 2: Evaluate the output -----------------------------------------
     eval_type = challenge.evaluation.get("type", "llm_judge")

@@ -31,5 +31,6 @@ Respond ONLY with valid JSON in this exact format. Make the feedback sound EXACT
   "feasibility": 50,
   "safety": 70,
   "market_fit": 40,
-  "feedback": "You're solving a fake problem and overcomplicating the toolset. We see 500 'research synthesizers' a day. Strip out the extra features, focus on one hyper-specific user base, and get the core loop to 99% reliability. Reject for now, go talk to users and reapply."
+  "feedback": "You're solving a fake problem and overcomplicating the toolset. We see 500 'research synthesizers' a day. Strip out the extra features, focus on one hyper-specific user base, and get the core loop to 99% reliability. Reject for now, go talk to users and reapply.",
+  "pivot_suggestion": "Instead of a generic research assistant, build an agent that strictly generates specialized legal briefs for copyright lawyers."
 }

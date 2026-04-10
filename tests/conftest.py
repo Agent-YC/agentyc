@@ -30,7 +30,7 @@ def sample_spec_data():
             "safety_level": "standard",
         },
         "expected_behaviors": ["Always cite sources", "Stay within budget"],
-        "entrypoint": "./agent.py",
+        "entrypoint": "simulate",
     }
 
 
