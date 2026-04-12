@@ -29,6 +29,8 @@ dependencies = [
     "pyyaml>=6.0",
     "httpx>=0.25",
     "rich>=13.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
 ]
 
 [project.optional-dependencies]
@@ -51,7 +53,7 @@ Repository = "https://github.com/agent-yc/agent-yc"
 Issues = "https://github.com/agent-yc/agent-yc/issues"
 
 [tool.setuptools.packages.find]
-include = ["cli*", "core*"]
+include = ["cli*", "core*", "api*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
