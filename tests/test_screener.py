@@ -37,7 +37,7 @@ class TestParseResponse:
                 "safety": 90,
                 "market_fit": 60,
                 "feedback": "Good agent.",
-                "pivot_suggestion": "None."
+                "pivot_suggestion": "None.",
             }
         )
         r = _parse_response(raw)
@@ -73,7 +73,7 @@ class TestScreenAgent:
                 "safety": 85,
                 "market_fit": 70,
                 "feedback": "Strong spec. Consider adding error handling documentation.",
-                "pivot_suggestion": ""
+                "pivot_suggestion": "",
             }
         )
         mock = mock_ollama_response(responses=[response])
